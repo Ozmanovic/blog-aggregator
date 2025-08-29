@@ -8,6 +8,13 @@
       "when": 1756441979785,
       "tag": "0000_chemical_living_lightning",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1756462771224,
+      "tag": "0001_steady_susan_delgado",
+      "breakpoints": true
     }
   ]
 }

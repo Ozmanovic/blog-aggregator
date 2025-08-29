@@ -1,5 +1,5 @@
 import { db } from "..";
-import { users } from "../schema";
+import { users, feeds } from "../schema";
 import { eq } from "drizzle-orm";
  
 export async function createUser(name: string) {
@@ -11,6 +11,13 @@ export async function getUserByName(name: string) {
   .select()
   .from(users)
   .where(eq(users.name, name));
+  return user ?? null;
+}
+export async function getUserById(uuid: string) {
+  const [user] = await db
+  .select()
+  .from(users)
+  .where(eq(users.id, uuid));
   return user ?? null;
 }
 
@@ -25,4 +32,20 @@ export async function getAllUsers() {
   .from(users)
   return user ?? null;
 }
+
+export async function createFeed(name:string, url:string, userId:string) {
+  const [result] = await db
+    .insert(feeds)
+    .values({ name, url, userId })
+    .returning();
+  return result; 
+}
+export async function getFeeds() {
+  const feed = await db
+    .select()
+    .from(feeds)
+    return feed ?? null;
+}
+
+
 
