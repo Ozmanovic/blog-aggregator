@@ -1,8 +1,11 @@
-import { handlerLogin, registerCommand, runCommand, type CommandsRegistry } from "./commandHandler.js";
+import {users, reset, handlerRegister ,handlerLogin, registerCommand, runCommand, type CommandsRegistry } from "./commandHandler.js";
 
-function main() {
+async function main() {
   const registry: CommandsRegistry = {};
   registerCommand(registry, "login", handlerLogin);
+  registerCommand(registry, "register", handlerRegister)
+  registerCommand(registry, "reset", reset)
+  registerCommand(registry, "users", users)
 
   const args = process.argv.slice(2);
   if (args.length < 1) {
@@ -14,11 +17,13 @@ function main() {
   const restArgs = args.slice(1);
 
   try {
-    runCommand(registry, command, ...restArgs);
+    await runCommand(registry, command, ...restArgs);
   } catch (err) {
     console.error(String(err));
     process.exit(1);
   }
+  process.exit(0)
 }
+
 
 main();
