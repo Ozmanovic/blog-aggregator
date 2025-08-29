@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1756441979785,
+      "tag": "0000_chemical_living_lightning",
+      "breakpoints": true
+    }
+  ]
+}
