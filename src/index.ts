@@ -1,4 +1,4 @@
-import {users, reset, handlerRegister ,handlerLogin, registerCommand, runCommand, type CommandsRegistry } from "./commandHandler.js";
+import {handlerAgg, users, reset, handlerRegister ,handlerLogin, registerCommand, runCommand, type CommandsRegistry } from "./commandHandler.js";
 
 async function main() {
   const registry: CommandsRegistry = {};
@@ -6,6 +6,7 @@ async function main() {
   registerCommand(registry, "register", handlerRegister)
   registerCommand(registry, "reset", reset)
   registerCommand(registry, "users", users)
+  registerCommand(registry, "agg", handlerAgg)
 
   const args = process.argv.slice(2);
   if (args.length < 1) {

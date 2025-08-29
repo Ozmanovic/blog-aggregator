@@ -3,6 +3,7 @@
 import { setUser } from "./config";
 import {getAllUsers, deleteUsers, createUser, getUserByName} from "./lib/db/queries/users"
 import { readConfig } from "./config";
+import { fetchFeed } from "./lib/rss";
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 export type CommandsRegistry = Record<string, CommandHandler>
@@ -75,3 +76,9 @@ export async function users() {
     console.log(error)
   }
 }
+export async function handlerAgg(cmdName: string, ...args: string[]) {
+  const urlie = args[0]
+  const rssFeed = await fetchFeed("https://www.wagslane.dev/index.xml")
+  const json = JSON.stringify(rssFeed, null, 2);
+  console.log(json)
+  }
