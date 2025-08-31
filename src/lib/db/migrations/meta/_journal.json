@@ -15,6 +15,13 @@
       "when": 1756462771224,
       "tag": "0001_steady_susan_delgado",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1756540873863,
+      "tag": "0002_silly_sasquatch",
+      "breakpoints": true
     }
   ]
 }

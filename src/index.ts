@@ -1,4 +1,4 @@
-import {feeds, addFeed, handlerAgg, users, reset, handlerRegister ,handlerLogin, registerCommand, runCommand, type CommandsRegistry } from "./commandHandler.js";
+import {unfollow, middlewareLoggedIn, following, follow, feeds, addFeed, handlerAgg, users, reset, handlerRegister ,handlerLogin, registerCommand, runCommand, type CommandsRegistry, } from "./commandHandler.js";
 
 async function main() {
   const registry: CommandsRegistry = {};
@@ -7,8 +7,12 @@ async function main() {
   registerCommand(registry, "reset", reset)
   registerCommand(registry, "users", users)
   registerCommand(registry, "agg", handlerAgg)
-  registerCommand(registry, "addfeed", addFeed)
+  registerCommand(registry, "addfeed", middlewareLoggedIn(addFeed))
   registerCommand(registry, "feeds", feeds)
+  registerCommand(registry, "follow", middlewareLoggedIn(follow))
+  registerCommand(registry, "following", middlewareLoggedIn(following))
+  registerCommand(registry, "unfollow", middlewareLoggedIn(unfollow))
+
 
   const args = process.argv.slice(2);
   if (args.length < 1) {
