@@ -11,6 +11,8 @@ import {
   createFeed,
   getUserById,
   deleteFeedFollow,
+  scrapeFeeds,
+  getPostsForUser,
 } from "./lib/db/queries/users";
 import { readConfig } from "./config";
 import { fetchFeed } from "./lib/rss";
@@ -101,11 +103,29 @@ export async function users() {
     console.log(error);
   }
 }
-export async function handlerAgg(cmdName: string, ...args: string[]) {
-  const urlie = args[0];
-  const rssFeed = await fetchFeed("https://www.wagslane.dev/index.xml");
-  const json = JSON.stringify(rssFeed, null, 2);
-  console.log(json);
+export async function handlerAgg(cmdName: string, time_between_reqs: string) {
+  if (!time_between_reqs) {
+    throw new Error("time_between_reqs argument required (e.g. 10s, 1m, 1h)");
+  }
+
+  const intervalMs = parseDuration(time_between_reqs);
+  console.log(`Collecting feeds every ${time_between_reqs}`);
+
+  
+  scrapeFeeds();
+
+  const interval = setInterval(() => {
+    scrapeFeeds();
+  }, intervalMs);
+
+
+  await new Promise<void>((resolve) => {
+    process.on("SIGINT", () => {
+      console.log("Shutting down feed aggregator...");
+      clearInterval(interval);
+      resolve();
+    });
+  });
 }
 
 export async function addFeed(cmdName: string, user: User, ...args: string[]) {
@@ -187,3 +207,31 @@ export function middlewareLoggedIn(handler: UserCommandHandler): CommandHandler 
     await handler(cmdName, user, ...args);
   };
 }
+export async function browse(cmdName: string, user: User) {
+  const posts = await getPostsForUser(user.id);
+  for (const post of posts) {
+    console.log(post.title);
+    console.log(post.url);
+    console.log(post.description);
+    console.log(post.publishedAt);
+    console.log(post.feedName);
+  }
+}
+
+
+function parseDuration(durationStr: string): number {
+  const match = durationStr.match(/^(\d+)(ms|s|m|h)$/);
+  if (!match) throw new Error("Invalid duration");
+
+  const value = Number(match[1]);
+  const unit = match[2];
+
+  if (unit === "ms") return value;
+  if (unit === "s") return value * 1000;
+  if (unit === "m") return value * 60_000;
+  if (unit === "h") return value * 60 * 60_000;
+
+  throw new Error("Invalid duration unit");
+}
+
+

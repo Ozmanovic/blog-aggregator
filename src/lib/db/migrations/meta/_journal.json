@@ -22,6 +22,20 @@
       "when": 1756540873863,
       "tag": "0002_silly_sasquatch",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1756629125654,
+      "tag": "0003_blue_thunderbolt_ross",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1756636692043,
+      "tag": "0004_first_rhino",
+      "breakpoints": true
     }
   ]
 }
